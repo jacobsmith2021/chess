@@ -1,75 +1,113 @@
+import logging
+import pprint
+from abc import ABC, abstractmethod
+
+log = logging.getLogger(__name__)
+
+
 class Board:
-Def _init__(x_len:int:y_len:int, z_len:int=None)
-If x_len is not None:
-Riase Not Implemented Error
-self. _board=[0 for j in range(x_leb)] for i   in. range(y_len)
-
-Abstract Class Piece:
-Value (none if oeice is critical)
-Maximum_move_length=None
-Moves
-Attacks
-Can jump=False
-Can_promote=False
-Special_initial_move=False
-Has_moved=False
-Has_directiobality=False
-Def move
-Def attack
-Move
-Remove piece
+    def __init__(self, x_len: int, y_len: int, z_len: int = None):
+        if z_len is not None:
+            raise NotImplementedError()
+        self._board = [0 for _ in range(x_len) for _ in range(y_len)]
+        log.info(f"made board\n{pprint.pformat(self._board)}")
 
 
+class Piece(ABC):
+    @property
+    @abstractmethod
+    def value(self):
+        return None
 
-Class Pawn:
-Value=1
-Move_length=1
-Can_promote=True
-Special_initial_move=(
-0,1,0
-0,0,0
-0,0,0
-)
-Special_initial_move_length=2
-Moves=
-(0,1,0
-0,0,0,
-0,0,0)
-Attacks=
-(1,0,0
-0,0,0
-0,0,0)
+    @property
+    def maximum_move_length(self):
+        return None
 
+    @property
+    def can_jump(self):
+        return False
 
-Class Rook:
-Value=4
-Moves=
-(0,1,0
-1,0,1
-0,1,0)
-Attack=
-(0,1,0
-1,0,1
-0,1,0)
-Special_initial_move=
-0,0,0
-1,0,1
-0,0,0
-Special_initial_move_length=2
-Has_directionailoty=True
+    @property
+    def can_promote(self):
+        return False
 
-Class Knight:
-Value=3
+    @property
+    def special_initial_move(self):
+        return None
 
+    @property
+    def has_directionality(self):
+        return None
 
-Class Bishop
-Value=3.15
+    @property
+    def moves(self):
+        return None
+
+    @property
+    def attacks(self):
+        return None
+
+    @abstractmethod
+    def move(self):
+        pass
+
+    def attack(self):
+        self.move()
 
 
-Class Queen:
-Value=9
+class Pawn:
+    value = 1
+    move_length = 1
+    can_promote = True
+    special_initial_move = [
+        [0, 1, 0],
+        [0, 0, 0],
+        [0, 0, 0]
+    ]
+    special_initial_move_length = 2
+    moves = [
+        [0, 1, 0],
+        [0, 0, 0],
+        [0, 0, 0]
+    ]
 
-Class King:
-Value=None
+    attacks = [
+        [1, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]]
 
 
+class Rook:
+    value = 4
+    moves = [
+        [0, 1, 0],
+        [1, 0, 0],
+        [0, 1, 0]]
+    attack = [
+        [0, 1, 0],
+        [1, 0, 1],
+        [0, 1, 0]
+    ]
+    Special_initial_move = [
+        [0, 0, 0],
+        [1, 0, 1],
+        [0, 0, 0]
+    ]
+    special_initial_move_length = 2
+    has_directionality = True
+
+
+class Knight:
+    value = 3
+
+
+class Bishop:
+    value = 3.15
+
+
+class Queen:
+    value = 9
+
+
+class King:
+    value = None
