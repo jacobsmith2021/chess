@@ -9,23 +9,35 @@ class Board:
         if z_len is not None:
             raise NotImplementedError()
         self._board = [[BlankSpace() for _ in range(x_len)] for _ in range(y_len)]
-        self._board[0] = self._get_main_row(swap_king=False)
-        self._board[1] = self._get_pawn_row(1)
-        self._board[-2] = self._get_pawn_row(-2)
-        self._board[-1] = self._get_main_row(swap_king=True)
+        if y_len > 1:
+            self._board[1] = self._get_pawn_row(1)  # noqa
+            self._board[-2] = self._get_pawn_row(-2)  # noqa
+        self._board[0] = self._get_main_row(swap_king=False, row_index=0)
+        self._board[-1] = self._get_main_row(swap_king=True, row_index=0)
         log.info(f"made board\n{self}")
 
     def _get_pawn_row(self, row_index: int):
         pawn_row = [Pawn() for _ in range(len(self._board[row_index]))]
         return pawn_row
 
-    @staticmethod
-    def _get_main_row(swap_king:bool):
-        main_row = [Rook(), Knight(), Bishop(), King(), Queen(), Bishop(), Knight(), Rook()]
+    def _get_main_row(self, swap_king: bool, row_index: int):
+        column_len = len(self._board[row_index])
+        main_row = [BlankSpace() for _ in range(column_len)]
+        right_index = column_len // 2
+        left_index = right_index - 1
+        left_side = [Rook(), Knight(), Bishop(), King()]
+        right_side = [Rook(), Knight(), Bishop(), Queen()]
+        for left_index in range(column_len // 2):
+            right_index = column_len - left_index - 1
+            if left_index < column_len:
+                main_row[left_index] = left_side[left_index]  # noqa
+            if right_index < column_len:
+                main_row[right_index] = right_side[left_index]  # noqa
+
         if swap_king:
-            temp=main_row[3]
-            main_row[3]=main_row[4]
-            main_row[4]=temp
+            temp = main_row[left_index]  # noqa
+            main_row[left_index] = main_row[right_index]  # noqa
+            main_row[right_index] = temp  # noqa
         return main_row
 
     def __repr__(self):
