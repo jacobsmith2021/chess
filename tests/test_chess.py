@@ -8,7 +8,7 @@ log = logging.getLogger(__name__)
 class TestChess(unittest.TestCase):
 
     def test_chess(self):
-        board = Board(x_len=8,y_len=8)
+        board = Board(x_len=8, y_len=8)
         correct_board = """ --------
 |RNBKQBNR|
 |PPPPPPPP|
@@ -19,7 +19,7 @@ class TestChess(unittest.TestCase):
 |PPPPPPPP|
 |RNBQKBNR|
  --------"""
-        self.assertEqual(str(board),correct_board)
+        self.assertEqual(str(board), correct_board)
 
 
 def main():
