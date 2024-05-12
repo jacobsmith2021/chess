@@ -81,9 +81,10 @@ def log_it(func):
 
 @log_it
 def main():
-    log.info(f"main")
+    log.info("main")
     Board(x_len=8, y_len=8)
-    log.info(f"end     ")
+    log.info("end     ")
+    log.info("end 2")
 
 
 if __name__ == "__main__":
