@@ -5,10 +5,18 @@ log = logging.getLogger(__name__)
 
 
 class Piece(ABC):
+
+    def __init__(self, player_id: int):
+        self._player_id = player_id
+
     @property
     @abstractmethod
     def value(self):
         return None
+
+    @property
+    def player_id(self):
+        return self._player_id
 
     @property
     def maximum_move_length(self):
